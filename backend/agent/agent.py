@@ -17,7 +17,7 @@ Always be concise but thorough. If a question requires multiple tools, use them 
 
 def get_llm():
     return ChatGroq(
-        model="qwen/qwen3-32b",
+        model="llama-3.3-70b-versatile",
         temperature=0,
         api_key=os.getenv("GROQ_API_KEY"),
     )
