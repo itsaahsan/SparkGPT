@@ -86,10 +86,10 @@ export default function App() {
         </header>
 
         {/* Chat area */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="max-w-3xl mx-auto px-4 py-6">
+        <div className="flex-1 overflow-y-auto flex flex-col">
+          <div className="max-w-3xl w-full mx-auto px-4 py-6 flex-1 flex flex-col">
             {history.length === 0 && !loading && (
-              <div className="flex flex-col items-center justify-center pt-12 gap-6">
+              <div className="flex-1 flex flex-col items-center justify-center gap-6">
                 <h2 className="text-2xl font-semibold" style={{ color: "#0d0d0d" }}>Examples</h2>
                 <ExampleQueries examples={examples} onSelect={handleExampleSelect} />
               </div>

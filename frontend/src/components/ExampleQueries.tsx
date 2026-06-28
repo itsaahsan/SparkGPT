@@ -7,7 +7,7 @@ export default function ExampleQueries({ examples, onSelect }: Props) {
   if (examples.length === 0) return null;
 
   return (
-    <div className="w-full max-w-xl">
+    <div className="w-full max-w-xl mx-auto">
       <div className="space-y-2">
         {examples.map((ex, i) => (
           <button
