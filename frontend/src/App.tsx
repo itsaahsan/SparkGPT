@@ -63,8 +63,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#ffffff" }}>
-      {/* Toast */}
+    <div className="h-screen flex flex-col" style={{ background: "#ffffff" }}>
       {toast && (
         <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-lg text-sm font-medium"
              style={{ background: "#10a37f", color: "#fff" }}>
@@ -72,66 +71,65 @@ export default function App() {
         </div>
       )}
 
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: "1px solid #f0f0f0" }}>
-          <h1 className="text-xl font-semibold" style={{ color: "#0d0d0d" }}>SparkGPT</h1>
-          <div className="flex items-center gap-3 text-xs" style={{ color: "#6e6e80" }}>
-            <span>Llama 3.3 70B</span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full" style={{ background: "#10a37f" }} />
-              Ready
-            </span>
-          </div>
-        </header>
-
-        {/* Chat area */}
-        <div className="flex-1 overflow-y-auto flex flex-col">
-          <div className="max-w-3xl w-full mx-auto px-4 py-6 flex-1 flex flex-col">
-            {history.length === 0 && !loading && (
-              <div className="flex-1 flex flex-col items-center justify-center gap-6">
-                <h2 className="text-2xl font-semibold" style={{ color: "#0d0d0d" }}>Examples</h2>
-                <ExampleQueries examples={examples} onSelect={handleExampleSelect} />
-              </div>
-            )}
-
-            {history.map((c, i) => (
-              <div key={i} className="mb-8">
-                {/* User message */}
-                <div className="flex justify-end mb-4">
-                  <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-br-sm text-sm"
-                       style={{ background: "#f7f7f8", color: "#0d0d0d" }}>
-                    {c.query}
-                  </div>
-                </div>
-                {/* Agent response */}
-                <div className="max-w-[90%]">
-                  <ReasoningTrace steps={c.steps} answer={c.answer} loading={false} duration={c.duration} onCopy={copyAnswer} />
-                </div>
-              </div>
-            ))}
-
-            {loading && (
-              <div className="mb-8">
-                <div className="flex justify-end mb-4">
-                  <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-br-sm text-sm"
-                       style={{ background: "#f7f7f8", color: "#0d0d0d" }}>
-                    {query || "..."}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 px-4">
-                  <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#10a37f", animationDelay: "0s" }} />
-                  <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#10a37f", animationDelay: "0.15s" }} />
-                  <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#10a37f", animationDelay: "0.3s" }} />
-                  <span className="text-xs ml-1" style={{ color: "#6e6e80" }}>Thinking...</span>
-                </div>
-              </div>
-            )}
-
-            <div ref={chatEndRef} />
-          </div>
+      {/* Header */}
+      <header className="px-6 py-4 flex items-center justify-between flex-shrink-0" style={{ borderBottom: "1px solid #f0f0f0" }}>
+        <h1 className="text-xl font-semibold" style={{ color: "#0d0d0d" }}>SparkGPT</h1>
+        <div className="flex items-center gap-3 text-xs" style={{ color: "#6e6e80" }}>
+          <span>Llama 3.3 70B</span>
+          <span className="flex items-center gap-1">
+            <span className="w-2 h-2 rounded-full" style={{ background: "#10a37f" }} />
+            Ready
+          </span>
         </div>
+      </header>
 
+      {/* Chat area */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-3xl mx-auto px-4 py-6">
+          {history.length === 0 && !loading && (
+            <div className="flex flex-col items-center gap-6" style={{ paddingTop: "15vh" }}>
+              <h2 className="text-2xl font-semibold" style={{ color: "#0d0d0d" }}>Examples</h2>
+              <ExampleQueries examples={examples} onSelect={handleExampleSelect} />
+            </div>
+          )}
+
+          {history.map((c, i) => (
+            <div key={i} className="mb-8">
+              <div className="flex justify-end mb-4">
+                <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-br-sm text-sm"
+                     style={{ background: "#f7f7f8", color: "#0d0d0d" }}>
+                  {c.query}
+                </div>
+              </div>
+              <div className="max-w-[90%]">
+                <ReasoningTrace steps={c.steps} answer={c.answer} loading={false} duration={c.duration} onCopy={copyAnswer} />
+              </div>
+            </div>
+          ))}
+
+          {loading && (
+            <div className="mb-8">
+              <div className="flex justify-end mb-4">
+                <div className="max-w-[85%] px-4 py-2.5 rounded-2xl rounded-br-sm text-sm"
+                     style={{ background: "#f7f7f8", color: "#0d0d0d" }}>
+                  {query || "..."}
+                </div>
+              </div>
+              <div className="flex items-center gap-2 px-4">
+                <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#10a37f", animationDelay: "0s" }} />
+                <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#10a37f", animationDelay: "0.15s" }} />
+                <div className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#10a37f", animationDelay: "0.3s" }} />
+                <span className="text-xs ml-1" style={{ color: "#6e6e80" }}>Thinking...</span>
+              </div>
+            </div>
+          )}
+
+          <div ref={chatEndRef} />
+        </div>
+      </div>
+
+      {/* Bottom section */}
+      <div className="flex-shrink-0">
         {/* Tool badges */}
         <div className="flex justify-center gap-2 pb-3">
           {[
