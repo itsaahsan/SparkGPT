@@ -1,4 +1,4 @@
-# AgentKit — AI Agent with Tools
+# SparkGPT — AI Agent with Tools
 
 A ReAct agent that reasons step by step using web search, Wikipedia, and calculator tools. Built with LangChain + LangGraph + Groq for fast inference, exposed via FastAPI, visualized with React.
 

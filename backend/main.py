@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(
-    title="AgentKit API",
+    title="SparkGPT API",
     description="AI Agent with Tools — ReAct agent powered by LangChain + Groq",
     version="1.0.0",
 )

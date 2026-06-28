@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: agentkit-api
+    name: sparkgpt-api
     runtime: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
