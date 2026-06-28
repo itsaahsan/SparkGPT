@@ -1,0 +1,149 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+.app { display: flex; height: 600px; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+
+.sidebar { width: 220px; background: #f7f7f8; border-right: 1px solid #e5e7eb; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+
+.logo { display: flex; align-items: center; gap: 8px; padding: 4px 8px 16px; border-bottom: 1px solid #e5e7eb; margin-bottom: 8px; }
+.logo-icon { width: 28px; height: 28px; background: #10a37f; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+.logo-icon svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
+.logo-text { font-size: 14px; font-weight: 600; color: #111; }
+
+.sidebar-label { font-size: 11px; color: #9ca3af; padding: 8px 8px 4px; }
+
+.example-btn { background: transparent; border: none; text-align: left; padding: 8px 10px; border-radius: 6px; cursor: pointer; color: #374151; font-size: 12px; line-height: 1.4; width: 100%; }
+.example-btn:hover { background: #ececec; }
+.example-btn.active { background: #e8e8e8; color: #111; font-weight: 500; }
+
+.main { flex: 1; display: flex; flex-direction: column; }
+
+.topbar { padding: 14px 20px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; }
+.topbar-title { font-size: 13px; color: #6b7280; }
+.status-badge { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #10a37f; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #10a37f; }
+
+.output { flex: 1; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; background: #fff; }
+
+.query-row { display: flex; justify-content: flex-end; }
+.query-bubble { background: #f4f4f4; border-radius: 18px 18px 4px 18px; padding: 10px 16px; max-width: 70%; font-size: 14px; color: #111; line-height: 1.5; }
+
+.thinking-card { background: #fafafa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; }
+.thinking-header { font-size: 11px; color: #9ca3af; font-weight: 500; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.step { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f0f0f0; }
+.step:last-child { border-bottom: none; padding-bottom: 0; }
+.step-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.step-search { background: #eff6ff; }
+.step-wiki { background: #f5f3ff; }
+.step-calc { background: #f0fdf4; }
+.step-info { flex: 1; }
+.step-tool { font-size: 11px; color: #9ca3af; }
+.step-query { font-size: 12px; color: #374151; margin-top: 2px; }
+
+.answer-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 14px 16px; }
+.answer-label { font-size: 11px; color: #16a34a; font-weight: 500; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+.answer-text { font-size: 14px; color: #111; line-height: 1.6; }
+
+.input-area { padding: 16px 20px; border-top: 1px solid #e5e7eb; background: #fff; }
+.input-row { display: flex; gap: 10px; align-items: center; background: #fff; border: 1px solid #d1d5db; border-radius: 12px; padding: 10px 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.input-row:focus-within { border-color: #10a37f; }
+.input-field { flex: 1; background: transparent; border: none; outline: none; font-size: 14px; color: #111; font-family: inherit; }
+.input-field::placeholder { color: #9ca3af; }
+.send-btn { width: 32px; height: 32px; background: #10a37f; border: none; border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.send-btn svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2; }
+
+.tools-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.tool-chip { background: #f4f4f4; border: 1px solid #e5e7eb; border-radius: 20px; padding: 4px 10px; font-size: 11px; color: #6b7280; display: flex; align-items: center; gap: 5px; }
+.chip-dot { width: 5px; height: 5px; border-radius: 50%; }
+.chip-blue { background: #3b82f6; }
+.chip-purple { background: #8b5cf6; }
+.chip-green { background: #10b981; }
+</style>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="logo-text">AgentKit</div>
+    </div>
+
+    <div class="sidebar-label">Examples</div>
+    <button class="example-btn active">Compare Bangladesh & Vietnam GDP</button>
+    <button class="example-btn">What is quantum computing?</button>
+    <button class="example-btn">Calculate compound interest on $5000</button>
+    <button class="example-btn">Who invented the internet?</button>
+    <button class="example-btn">Latest AI trends in 2025</button>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">Llama 3 70B · ReAct Agent</span>
+      <div class="status-badge">
+        <div class="dot"></div>
+        Ready
+      </div>
+    </div>
+
+    <div class="output">
+      <div class="query-row">
+        <div class="query-bubble">Compare Bangladesh and Vietnam GDP and calculate the ratio</div>
+      </div>
+
+      <div class="thinking-card">
+        <div class="thinking-header">Reasoning trace</div>
+        <div class="step">
+          <div class="step-icon step-search">🔍</div>
+          <div class="step-info">
+            <div class="step-tool">web_search</div>
+            <div class="step-query">"Bangladesh GDP 2024"</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon step-search">🔍</div>
+          <div class="step-info">
+            <div class="step-tool">web_search</div>
+            <div class="step-query">"Vietnam GDP 2024"</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon step-wiki">📖</div>
+          <div class="step-info">
+            <div class="step-tool">wikipedia</div>
+            <div class="step-query">"Economy of Bangladesh"</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon step-calc">🧮</div>
+          <div class="step-info">
+            <div class="step-tool">calculator</div>
+            <div class="step-query">460 / 430 * 100</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="answer-card">
+        <div class="answer-label">✓ Answer</div>
+        <div class="answer-text">Bangladesh's GDP is approximately $460B while Vietnam's is $430B — a ratio of 107%. Both economies are growing rapidly, with Bangladesh slightly ahead.</div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-row">
+        <input class="input-field" type="text" placeholder="Ask anything..." />
+        <button class="send-btn">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="tools-row">
+        <div class="tool-chip"><div class="chip-dot chip-blue"></div>Web search</div>
+        <div class="tool-chip"><div class="chip-dot chip-purple"></div>Wikipedia</div>
+        <div class="tool-chip"><div class="chip-dot chip-green"></div>Calculator</div>
+      </div>
+    </div>
+  </div>
+</div>
