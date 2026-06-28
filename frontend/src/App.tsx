@@ -14,7 +14,13 @@ interface Conversation {
 export default function App() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [examples, setExamples] = useState<string[]>([]);
+  const [examples, setExamples] = useState<string[]>([
+    "What's the GDP of Bangladesh and how does it compare to Vietnam?",
+    "What is the speed of light in meters per second, and how long would it take to travel to the Moon at that speed?",
+    "Tell me about the history of the Internet and how many users it has today",
+    "Calculate the compound interest on $10,000 at 5% annual rate for 10 years",
+    "What are the top 3 programming languages in 2024 and their main use cases?",
+  ]);
   const [history, setHistory] = useState<Conversation[]>([]);
   const [toast, setToast] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,7 +28,7 @@ export default function App() {
   const startTime = useRef(0);
 
   useEffect(() => {
-    getExamples().then(setExamples).catch(() => {});
+    getExamples().then((e) => { if (e.length) setExamples(e); }).catch(() => {});
   }, []);
 
   useEffect(() => {
