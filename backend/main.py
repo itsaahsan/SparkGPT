@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from api.routes import router
 from dotenv import load_dotenv
@@ -22,7 +22,12 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "API is running successfully"}
+    return {"message": "SparkGPT API is running"}
+
+
+@app.head("/")
+async def head_root():
+    return Response(status_code=200)
 
 
 @app.get("/health")
