@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE = BASE.endsWith("/api") ? BASE : `${BASE}/api`;
 
 export interface Step {
   type: "tool_use" | "tool_result";
