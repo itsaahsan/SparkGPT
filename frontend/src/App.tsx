@@ -84,7 +84,7 @@ export default function App() {
           <span>Llama 3.3 70B</span>
           <span className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full" style={{ background: "#10a37f" }} />
-            Ready
+
           </span>
         </div>
       </header>
