@@ -2,6 +2,12 @@
 
 A ReAct agent that reasons step by step using web search, Wikipedia, and calculator tools. Built with LangChain + LangGraph + Groq for fast inference, exposed via FastAPI, visualized with React.
 
+## Live Demo
+
+- **App**: https://sparkgpt.onrender.com
+
+> Hosted on Render's free tier — the first request after inactivity may take a few seconds to spin up.
+
 ## Architecture
 
 ```
@@ -23,10 +29,16 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 └─────────────────────────────────────────────────────┘
 ```
 
+## Why These Choices
+
+- **LangGraph over a plain LangChain agent executor** — gives explicit control over the reasoning loop (state, transitions, tool-call routing) instead of a black-box executor, which matters for debugging why an agent chose a particular tool.
+- **Groq over OpenAI/Anthropic for inference** — free-tier access to a fast open-weight model (Qwen3-32B) made it practical to iterate on the agent's reasoning trace quickly without cost constraints during development.
+- **Exposed reasoning trace in the UI** — rather than just showing a final answer, the frontend surfaces each reasoning/tool-call step, since the value of a ReAct agent is in the interpretable step-by-step process, not just the output.
+
 ## Tech Stack
 
 | Layer    | Tech                                    |
-| -------- | --------------------------------------- |
+| -------- | ---------------------------------------- |
 | Backend  | Python, FastAPI, LangChain, LangGraph   |
 | LLM      | Groq (Qwen3-32B) — free tier            |
 | Tools    | Tavily Search, Wikipedia, Calculator    |
@@ -70,8 +82,8 @@ App at http://localhost:5173
 | ------ | ----------------- | -------------------- |
 | POST   | /api/agent/run    | Run agent with query |
 | GET    | /api/examples     | Get example queries  |
-| GET    | /                 | API status           |
-| GET    | /health           | Health check         |
+| GET    | /                 | API status            |
+| GET    | /health           | Health check          |
 
 ## Environment Variables
 
@@ -116,3 +128,11 @@ VITE_API_URL=<your-backend-url>/api
 ### After Deploy
 - Add UptimeRobot ping to backend URL to prevent sleep
 - Update frontend `VITE_API_URL` with actual backend URL
+
+## License
+
+MIT
+
+## Author
+
+**Amimul Ahsan** - [GitHub](https://github.com/itsaahsan)
