@@ -4,9 +4,8 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 
 ## Live Demo
 
-- **App**: https://sparkgpt.onrender.com
-
-> Hosted on Render's free tier — the first request after inactivity may take a few seconds to spin up.
+- **App**: https://sparkgpt-opal.vercel.app
+- **API**: https://sparkgpt-api.vercel.app
 
 ## Architecture
 
@@ -20,7 +19,7 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 │                  FastAPI Backend                      │
 │  ┌─────────────────────────────────────────────┐    │
 │  │         ReAct Agent (LangGraph)              │    │
-│  │       Groq LLM (Qwen3-32B) + Tools          │    │
+│  │       Groq LLM (Llama-3.3-70B) + Tools      │    │
 │  │  ┌──────────┬──────────┬──────────────┐     │    │
 │  │  │ Tavily   │ Wikipedia│  Calculator  │     │    │
 │  │  │ Search   │          │              │     │    │
@@ -29,21 +28,15 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 └─────────────────────────────────────────────────────┘
 ```
 
-## Why These Choices
-
-- **LangGraph over a plain LangChain agent executor** — gives explicit control over the reasoning loop (state, transitions, tool-call routing) instead of a black-box executor, which matters for debugging why an agent chose a particular tool.
-- **Groq over OpenAI/Anthropic for inference** — free-tier access to a fast open-weight model (Qwen3-32B) made it practical to iterate on the agent's reasoning trace quickly without cost constraints during development.
-- **Exposed reasoning trace in the UI** — rather than just showing a final answer, the frontend surfaces each reasoning/tool-call step, since the value of a ReAct agent is in the interpretable step-by-step process, not just the output.
-
 ## Tech Stack
 
 | Layer    | Tech                                    |
 | -------- | ---------------------------------------- |
 | Backend  | Python, FastAPI, LangChain, LangGraph   |
-| LLM      | Groq (Qwen3-32B) — free tier            |
+| LLM      | Groq (Llama-3.3-70B) — free tier        |
 | Tools    | Tavily Search, Wikipedia, Calculator    |
 | Frontend | React, TypeScript, Tailwind CSS         |
-| Deploy   | Render (both frontend & backend)        |
+| Deploy   | Vercel                                   |
 
 ## Getting Started
 
@@ -56,11 +49,10 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 ### Backend
 
 ```bash
-cd backend
 cp .env.example .env
 # Add your API keys to .env
 pip install -r requirements.txt
-uvicorn main:app --reload
+uvicorn api.index:app --reload
 ```
 
 API docs at http://localhost:8000/docs
@@ -95,39 +87,27 @@ TAVILY_API_KEY=tvly-...
 
 ### Frontend (.env)
 ```
-VITE_API_URL=<your-backend-url>/api
+VITE_API_URL=<your-backend-url>
 ```
 
-## Deploy to Render
+## Deploy to Vercel
 
-### Backend (Web Service)
+### Backend (API)
 1. Push to GitHub
-2. Go to Render → New Web Service
-3. Connect your repo
-4. Settings:
-   - **Root Directory**: `backend`
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-5. Add environment variables:
+2. Go to [vercel.com](https://vercel.com) → New Project
+3. Import your repo — Vercel auto-detects Python
+4. Add environment variables:
    - `GROQ_API_KEY` = your Groq key
    - `TAVILY_API_KEY` = your Tavily key
-   - `PYTHON_VERSION` = `3.11`
-6. Deploy
-
-### Frontend (Static Site)
-1. Go to Render → New Static Site
-2. Connect same repo
-3. Settings:
-   - **Root Directory**: `frontend`
-   - **Build Command**: `npm install && npm run build`
-   - **Publish Directory**: `dist`
-4. Add environment variable:
-   - `VITE_API_URL` = `https://your-backend-name.onrender.com/api`
 5. Deploy
 
-### After Deploy
-- Add UptimeRobot ping to backend URL to prevent sleep
-- Update frontend `VITE_API_URL` with actual backend URL
+### Frontend (Static Site)
+1. Go to vercel.com → New Project → Import same repo
+2. Settings:
+   - **Root Directory**: `frontend`
+3. Add environment variable:
+   - `VITE_API_URL` = your backend URL (e.g. `https://sparkgpt-api.vercel.app`)
+4. Deploy
 
 ## License
 
