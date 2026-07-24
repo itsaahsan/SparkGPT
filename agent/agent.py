@@ -23,23 +23,9 @@ def get_llm():
     )
 
 
-def run_agent(user_input: str):
-    llm = get_llm()
-    agent_executor = create_react_agent(llm, tools)
-
-    result = agent_executor.stream(
-        {
-            "messages": [
-                SystemMessage(content=SYSTEM_PROMPT),
-                ("user", user_input),
-            ]
-        },
-        stream_mode="values",
-    )
-
+def _collect_steps(result):
     steps = []
     final_answer = ""
-
     for chunk in result:
         messages = chunk.get("messages", [])
         if not messages:
@@ -65,5 +51,36 @@ def run_agent(user_input: str):
             )
         elif hasattr(msg, "content") and msg.content and msg.type == "ai":
             final_answer = msg.content
+    return steps, final_answer
 
-    return {"steps": steps, "answer": final_answer}
+
+def run_agent(user_input: str):
+    llm = get_llm()
+
+    # Try with tools first; if Groq returns a tool_use_failed error,
+    # fall back to a direct LLM call without tools.
+    try:
+        agent_executor = create_react_agent(llm, tools)
+        result = agent_executor.stream(
+            {
+                "messages": [
+                    SystemMessage(content=SYSTEM_PROMPT),
+                    ("user", user_input),
+                ]
+            },
+            stream_mode="values",
+        )
+        steps, final_answer = _collect_steps(result)
+        if final_answer:
+            return {"steps": steps, "answer": final_answer}
+    except Exception:
+        pass
+
+    # Fallback: direct LLM call without tools
+    response = llm.invoke(
+        [
+            SystemMessage(content=SYSTEM_PROMPT),
+            ("user", user_input),
+        ]
+    )
+    return {"steps": [], "answer": response.content}
