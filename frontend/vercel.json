@@ -6,10 +6,6 @@
     {
       "source": "/api/(.*)",
       "destination": "https://sparkgpt-api.vercel.app/api/$1"
-    },
-    {
-      "source": "/favicon.ico",
-      "destination": "https://sparkgpt-api.vercel.app/favicon.ico"
     }
   ]
 }
