@@ -1,4 +1,4 @@
-from langchain_groq import ChatGroq
+from langchain_mistralai import ChatMistralAI
 from langgraph.prebuilt import create_react_agent
 from .tools import tools
 import os
@@ -16,10 +16,10 @@ Always be concise but thorough. If a question requires multiple tools, use them 
 
 
 def get_llm():
-    return ChatGroq(
-        model="llama-3.3-70b-versatile",
+    return ChatMistralAI(
+        model=os.getenv("MISTRAL_MODEL", "ministral-3b-latest"),
         temperature=0,
-        api_key=os.getenv("GROQ_API_KEY"),
+        api_key=os.getenv("MISTRAL_API_KEY"),
     )
 
 
@@ -57,7 +57,7 @@ def _collect_steps(result):
 def run_agent(user_input: str):
     llm = get_llm()
 
-    # Try with tools first; if Groq returns a tool_use_failed error,
+    # Try with tools first; if Mistral returns a tool_use_failed error,
     # fall back to a direct LLM call without tools.
     try:
         agent_executor = create_react_agent(llm, tools)

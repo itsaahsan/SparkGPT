@@ -29,6 +29,8 @@ npm-debug.log*
 # Vercel
 .vercel/
 .env*
+!.env.example
+!frontend/.env.example
 
 # Build artifacts
 pyproject.toml

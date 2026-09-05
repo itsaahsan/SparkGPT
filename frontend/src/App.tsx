@@ -81,7 +81,7 @@ export default function App() {
       <header className="px-6 py-4 flex items-center justify-between flex-shrink-0" style={{ borderBottom: "1px solid #f0f0f0" }}>
         <h1 className="text-xl font-semibold" style={{ color: "#0d0d0d" }}>SparkGPT</h1>
         <div className="flex items-center gap-3 text-xs" style={{ color: "#6e6e80" }}>
-          <span>Llama 3.3 70B</span>
+          <span>Mistral ministral-3b</span>
 
         </div>
       </header>

@@ -1,6 +1,6 @@
 # SparkGPT — AI Agent with Tools
 
-A ReAct agent that reasons step by step using web search, Wikipedia, and calculator tools. Built with LangChain + LangGraph + Groq for fast inference, exposed via FastAPI, visualized with React.
+A ReAct agent that reasons step by step using web search, Wikipedia, and calculator tools. Built with LangChain + LangGraph + Mistral for fast inference, exposed via FastAPI, visualized with React.
 
 ## Live Demo
 
@@ -19,7 +19,7 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 │                  FastAPI Backend                      │
 │  ┌─────────────────────────────────────────────┐    │
 │  │         ReAct Agent (LangGraph)              │    │
-│  │       Groq LLM (Llama-3.3-70B) + Tools      │    │
+│  │     Mistral LLM (ministral-3b) + Tools     │    │
 │  │  ┌──────────┬──────────┬──────────────┐     │    │
 │  │  │ Tavily   │ Wikipedia│  Calculator  │     │    │
 │  │  │ Search   │          │              │     │    │
@@ -33,8 +33,8 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 | Layer    | Tech                                    |
 | -------- | ---------------------------------------- |
 | Backend  | Python, FastAPI, LangChain, LangGraph   |
-| LLM      | Groq (Llama-3.3-70B) — free tier        |
-| Tools    | Tavily Search, Wikipedia, Calculator    |
+| LLM      | Mistral (ministral-3b-latest, via `MISTRAL_MODEL`) |
+| Tools    | Tavily Search (optional), Wikipedia, Calculator |
 | Frontend | React, TypeScript, Tailwind CSS         |
 | Deploy   | Vercel                                   |
 
@@ -43,15 +43,17 @@ A ReAct agent that reasons step by step using web search, Wikipedia, and calcula
 ### Prerequisites
 - Python 3.11+
 - Node.js 18+
-- [Groq API key](https://console.groq.com) (free)
-- [Tavily API key](https://tavily.com) (free)
+- [Mistral API key](https://console.mistral.ai) (free tier works; default model `ministral-3b-latest`)
+- [Tavily API key](https://tavily.com) (optional — only needed for web search; app runs without it with Wikipedia + Calculator)
 
 ### Backend
 
 ```bash
-cp .env.example .env
-# Add your API keys to .env
 pip install -r requirements.txt
+# Create .env in repo root:
+# MISTRAL_API_KEY=...
+# MISTRAL_MODEL=ministral-3b-latest
+# TAVILY_API_KEY=... (optional)
 uvicorn api.index:app --reload
 ```
 
@@ -81,8 +83,9 @@ App at http://localhost:5173
 
 ### Backend (.env)
 ```
-GROQ_API_KEY=gsk_...
-TAVILY_API_KEY=tvly-...
+MISTRAL_API_KEY=...
+MISTRAL_MODEL=ministral-3b-latest
+TAVILY_API_KEY=tvly-... (optional — web search disabled if missing)
 ```
 
 ### Frontend (.env)
@@ -97,8 +100,9 @@ VITE_API_URL=<your-backend-url>
 2. Go to [vercel.com](https://vercel.com) → New Project
 3. Import your repo — Vercel auto-detects Python
 4. Add environment variables:
-   - `GROQ_API_KEY` = your Groq key
-   - `TAVILY_API_KEY` = your Tavily key
+   - `MISTRAL_API_KEY` = your Mistral key
+   - `MISTRAL_MODEL` = `ministral-3b-latest` (or `mistral-small-latest` / `mistral-medium-latest`)
+   - `TAVILY_API_KEY` = your Tavily key (optional)
 5. Deploy
 
 ### Frontend (Static Site)

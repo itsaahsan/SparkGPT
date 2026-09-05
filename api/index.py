@@ -7,7 +7,7 @@ load_dotenv()
 
 app = FastAPI(
     title="SparkGPT API",
-    description="AI Agent with Tools — ReAct agent powered by LangChain + Groq",
+    description="AI Agent with Tools — ReAct agent powered by LangChain + Mistral",
     version="1.0.0",
 )
 

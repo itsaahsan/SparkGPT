@@ -8,7 +8,11 @@ from langchain_community.utilities import WikipediaAPIWrapper
 from langchain.tools import tool
 import math
 
-search_tool = TavilySearch(max_results=3)
+import os
+
+search_tool = None
+if os.getenv("TAVILY_API_KEY"):
+    search_tool = TavilySearch(max_results=3)
 
 wiki_tool = WikipediaQueryRun(
     api_wrapper=WikipediaAPIWrapper(top_k_results=2, doc_content_chars_max=2000)
@@ -25,4 +29,4 @@ def calculator(expression: str) -> str:
         return f"Error: {e}"
 
 
-tools = [search_tool, wiki_tool, calculator]
+tools = [t for t in [search_tool, wiki_tool, calculator] if t is not None]
